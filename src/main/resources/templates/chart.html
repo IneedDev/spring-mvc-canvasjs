@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Test 2</title>
+</head>
+<body>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    window.onload = function() {
+    var dps = /*[[${dataPointsList}]]*/
+    var chart = new CanvasJS.Chart("chartContainer", {
+    	theme: "dark1", // "light1", "dark1", "dark2"
+    	animationEnabled: true,
+    	title: {
+    		text: "Average Sea Temperature - Amsterdam"
+    	},
+    	axisX: {
+    		valueFormatString: "MMM"
+    	},
+    	axisY: {
+    		title: "Temperature (in °C)",
+    		includeZero: true,
+    		suffix: " °C"
+    	},
+    	data: [{
+    		type: "line",
+    		xValueType: "dateTime",
+    		xValueFormatString: "MMM",
+    		yValueFormatString: "#,##0 °C",
+    		dataPoints: dps[0]
+    	}]
+    });
+    chart.render();
+
+    var dps = /*[[${priceList}]]*/
+    var chart2 = new CanvasJS.Chart("chartContainer2", {
+    	theme: "light1", // "light1", "dark1", "dark2"
+    	animationEnabled: false,
+    	toolTip: {
+    	    enabled: false
+    	    },
+   		title: {
+			text: "Prices quarterly "
+		},
+		axisX: {
+			labelFormatter: function (e) {
+			var date = new Date(e);
+			console.log(date.getYear)
+            var count = (date.getMonth()/3 << 0) + 1;
+            return "Q" + count + " " + CanvasJS.formatDate(e.value, "YY");
+			},
+      gridThickness: 0
+		},
+		data: [
+		{
+			type: "line",
+			dataPoints: dps[0]
+			}]
+	});
+	chart2.render();
+
+    }
+
+
+    /*]]>*/
+</script>
+
+<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+<br>
+<div id="chartContainer2" style="height: 370px; width: 100%;"></div>
+
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>
